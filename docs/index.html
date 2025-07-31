@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Deformable Neural Radiance Fields creates free-viewpoint portraits (nerfies) from casually captured videos.">
+  <meta name="keywords" content="Nerfies, D-NeRF, NeRF">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dream-to-Recon: Monocular 3D Reconstruction with Diffusion-Depth Distillation from Single Images</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <!-- <link rel="icon" href="./static/images/favicon.ico"> -->
+  <!-- <link rel="icon" href="./static/images/apple-touch-icon.png"> -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏞️</text></svg>">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <!-- custom font for the conference text -->
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Dream-to-Recon: Monocular 3D Reconstruction with Diffusion-Depth Distillation
+            from Single Images</h1>
+          <div class="is-size-5 publication-authors">
+            <!-- <span class="author-block" style="font-family: 'Libre Baskerville', serif;">ICCV 2025</span> -->
+            <img src="static/images/iccv-2025-logo.svg" alt="ICCV 2025 Logo"
+              style="height: 2.5em; vertical-align: middle; margin-top: 8px; margin-bottom: 24px;" />
+            </div>
+            <div class="is-size-4 publication-authors">
+            <span class="author-block">
+              <a href="">Philipp Wulff</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="">Felix Wimbauer</a><sup>1,2</sup>,</span>
+            <span class="author-block">
+              <a href="">Dominik Muhle</a><sup>1,2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="">Daniel Cremers</a><sup>1,2</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Technical University of Munich</span>,
+            <span class="author-block"><sup>2</sup>MCML</span>
+            </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+                </span>
+            <!-- arxiv Link. -->
+            <span class="link-block">
+                <a href="" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/philippwulff/dream-to-real" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code (Coming Soon)</span>
+                  </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video id="teaser" autoplay muted loop playsinline height="100%" style="margin-bottom: 16px">
+        <source src="static/videos/teaser_v2_3x.mp4"
+                type="video/mp4">
+      </video>
+      <h2 class="subtitle has-text-centered">
+        <b>TL;DR:</b> We leverage fine-tuned diffusion models for inpainting and a
+        pre-trained depth predictor to generate high-quality scene geometry from a single image.
+        Afterwards, we distill a feed-forward scene reconstruction model, which performs on par with reconstruction methods
+        trained with multi-view supervision.
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Volumetric scene reconstruction from a single image is crucial for a broad range of applications like autonomous driving
+              and robotics.
+              Recent volumetric reconstruction methods achieve impressive results, but generally require expensive 3D ground truth or
+              multi-view supervision.
+              </p>
+              <p>
+              We propose to leverage pre-trained 2D diffusion models and depth prediction models to generate synthetic scene geometry
+              from a single image.
+              This can then be used to distill a feed-forward scene reconstruction model.
+              Our experiments on the challenging KITTI-360 and Waymo datasets demonstrate that our method matches or outperforms
+              state-of-the-art baselines that use multi-view supervision, and offers unique advantages, for example regarding dynamic
+              scenes.
+              </p>
+              </div>
+              </div>
+              </div>
+              <!--/ Abstract. -->
+    </div>
+    </div>
+    </section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Paper video. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+    <!--/ Paper video. -->
+<!-- Method. -->
+<div class="columns is-centered has-text-centered">
+  <div class="column is-four-fifths">
+    <h2 class="title is-3">Method</h2>
+    <div class="content has-text-justified">
+      <p>
+        <span class="dnerf">Dream-to-Recon</span> comprises three steps: <b>a)</b> We train a view completion model (VCM) that inpaints occluded areas and refines warped views. Training
+uses only a single view per scene and leverages forward-backward warping for data generation. <b>b)</b> The VCM is applied iteratively alongside
+a depth prediction network to synthesize virtual novel views, enabling progressive refinement of the 3D geometry. <b>c)</b> The synthesized scene
+geometries are then used to distill a feed-forward scene reconstruction model. by supervising occupancy and virtual depth.
+      </p>
+      <img src="static/images/method_v2.svg" alt="Method Overview">
+    </div>
+    <!--/ Method. -->
+    </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Animation. -->
+    <div class="columns is-centered has-text-centered">
+      <h2 class="title is-3">Results</h2>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">3D Reconstruction</h2>
+
+        <!-- Interpolating. -->
+        <h3 class="title is-4">KITTI-360</h3>
+        <div class="content has-text-justified">
+          <p>
+            TODO
+          </p>
+        </div>
+        <div class="content has-text-centered">
+          <video id="replay-video" controls muted preload playsinline width="75%">
+            <source src="./static/videos/replay.mp4" type="video/mp4">
+          </video>
+        </div>
+        <br />
+        <!--/ Interpolating. -->
+
+        <!-- Re-rendering. -->
+        <h3 class="title is-4">Waymo</h3>
+        <div class="content has-text-justified">
+          <p>
+            TODO
+            </p>
+        </div>
+        <div class="content has-text-centered">
+          <video id="replay-video" controls muted preload playsinline width="75%">
+            <source src="./static/videos/replay.mp4" type="video/mp4">
+          </video>
+        </div>
+        <!--/ Re-rendering. -->
+        </div>
+        </div>
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">View Completion</h2>
+          <!-- Interpolating. -->
+          <h3 class="title is-4">KITTI-360</h3>
+          <div class="content has-text-justified">
+            <p>
+              TODO
+              </p>
+          </div>
+          <div class="content has-text-centered">
+            <video id="replay-video" controls muted preload playsinline width="75%">
+              <source src="./static/videos/replay.mp4" type="video/mp4">
+            </video>
+          </div>
+          <br />
+          <!--/ Interpolating. -->
+          <!-- Interpolating. -->
+          <h3 class="title is-4">Occlusion Masks</h3>
+          <div class="content has-text-justified">
+            <p>
+              TODO
+              </p>
+              </div>
+              <div class="content has-text-centered">
+                <video id="replay-video" controls muted preload playsinline width="75%">
+                  <source src="./static/videos/replay.mp4" type="video/mp4">
+                </video>
+                </div>
+              <br />
+              <!--/ Interpolating. -->
+              </div>
+              </div>
+    </div>
+    </section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre>
+<code>@inproceedings{wulff2025dreamtorecon,
+  title     = {Dream-to-Recon: Monocular 3D Reconstruction with Diffusion-Depth Distillation from Single Images},
+  author    = {Wulff, Philipp and Wimbauer, Felix and Muhle, Dominik and Cremers, Daniel},
+  booktitle = {IEEE International Conference on Computer Vision (ICCV)},
+  year      = {2025}
+}</code></pre>
+  </div>
+  <!-- Acknowledgements. -->
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <div class="content has-text-justified">
+          <p>
+            <b>Acknowledgements: </b>This work was funded by the ERC Advanced Grant ”SIMULACRON” (agreement #884679), the GNI
+            Project ”AI4Twinning”, and the DFG project CR 250/26-1 ”4D YouTube”.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/ Acknowledgements. -->
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link" href="https://github.com/philippwulff/dream-to-real" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is borrowed from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> and under a <a
+              rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> license.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
