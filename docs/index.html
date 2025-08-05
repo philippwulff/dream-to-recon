@@ -3,23 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="description"
-        content="Deformable Neural Radiance Fields creates free-viewpoint portraits (nerfies) from casually captured videos.">
-  <meta name="keywords" content="Nerfies, D-NeRF, NeRF">
+        content="Dream-to-Recon generates high-quality scene geometry from a single image and performs on par with reconstruction methods trained with multi-view supervision.">
+  <meta name="keywords" content="Dream-to-Recon, Monocular 3D Reconstruction, Diffusion, Generative">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dream-to-Recon: Monocular 3D Reconstruction with Diffusion-Depth Distillation from Single Images</title>
 
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0C73V1VRL7"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-
+      function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
 
-    gtag('config', 'G-PYVRSFMDRL');
+      gtag('config', 'G-0C73V1VRL7');
   </script>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
@@ -66,7 +62,7 @@
             <span class="author-block">
               <a href="">Felix Wimbauer</a><sup>1,2</sup>,</span>
             <span class="author-block">
-              <a href="">Dominik Muhle</a><sup>1,2</sup>,
+              <a href="">Dominik Muhle</a><sup>1,2,3</sup>,
             </span>
             <span class="author-block">
               <a href="">Daniel Cremers</a><sup>1,2</sup>
@@ -75,14 +71,15 @@
 
           <div class="is-size-5 publication-authors">
             <span class="author-block"><sup>1</sup>Technical University of Munich</span>,
-            <span class="author-block"><sup>2</sup>MCML</span>
+            <span class="author-block"><sup>2</sup>MCML</span>,
+            <span class="author-block"><sup>3</sup>SE3 Labs</span>
             </div>
 
           <div class="column has-text-centered">
             <div class="publication-links">
               <!-- PDF Link. -->
               <span class="link-block">
-                <a href="" class="external-link button is-normal is-rounded is-dark">
+                <a href="https://arxiv.org/pdf/2508.02323" class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                     <i class="fas fa-file-pdf"></i>
                   </span>
@@ -91,7 +88,7 @@
                 </span>
             <!-- arxiv Link. -->
             <span class="link-block">
-                <a href="" class="external-link button is-normal is-rounded is-dark">
+                <a href="https://arxiv.org/abs/2508.02323" class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="ai ai-arxiv"></i>
                   </span>
@@ -119,14 +116,13 @@
 <section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
-      <video id="teaser" autoplay muted loop playsinline height="100%" style="margin-bottom: 16px">
-        <source src="static/videos/teaser_v2_3x.mp4"
+      <video id="teaser" autoplay muted loop playsinline height="100%" style="margin-bottom: 16px;">
+        <source src="static/videos/teaser_3x.mp4"
                 type="video/mp4">
       </video>
       <h2 class="subtitle has-text-centered">
-        <b>TL;DR:</b> We leverage fine-tuned diffusion models for inpainting and a
-        pre-trained depth predictor to generate high-quality scene geometry from a single image.
-        Afterwards, we distill a feed-forward scene reconstruction model, which performs on par with reconstruction methods
+        We leverage a diffusion model and a depth predictor to generate high-quality scene geometry from a single
+        image. Then, we distill a feed-forward scene reconstruction model, which performs on par with reconstruction methods
         trained with multi-view supervision.
       </h2>
     </div>
@@ -150,11 +146,11 @@
               </p>
               <p>
               We propose to leverage pre-trained 2D diffusion models and depth prediction models to generate synthetic scene geometry
-              from a single image.
+              <b>from a single image</b>.
               This can then be used to distill a feed-forward scene reconstruction model.
-              Our experiments on the challenging KITTI-360 and Waymo datasets demonstrate that our method matches or outperforms
-              state-of-the-art baselines that use multi-view supervision, and offers unique advantages, for example regarding dynamic
-              scenes.
+              Our experiments on the challenging KITTI-360 and Waymo datasets demonstrate that our method
+              <b>matches or outperforms state-of-the-art</b> baselines that use multi-view supervision, and offers unique advantages,
+              for example regarding <b>dynamic scenes</b>.
               </p>
               </div>
               </div>
@@ -185,7 +181,8 @@
         <span class="dnerf">Dream-to-Recon</span> comprises three steps: <b>a)</b> We train a view completion model (VCM) that inpaints occluded areas and refines warped views. Training
 uses only a single view per scene and leverages forward-backward warping for data generation. <b>b)</b> The VCM is applied iteratively alongside
 a depth prediction network to synthesize virtual novel views, enabling progressive refinement of the 3D geometry. <b>c)</b> The synthesized scene
-geometries are then used to distill a feed-forward scene reconstruction model. by supervising occupancy and virtual depth.
+geometries are then used to distill a feed-forward scene reconstruction model by supervising occupancy and virtual
+depth.
       </p>
       <img src="static/images/method_v2.svg" alt="Method Overview">
     </div>
@@ -286,7 +283,7 @@ geometries are then used to distill a feed-forward scene reconstruction model. b
   <div class="container is-max-desktop">
     <div class="columns is-centered">
       <div class="column is-full-width">
-        <div class="content has-text-justified">
+        <div class="content has-text-justified is-small">
           <p>
             <b>Acknowledgements: </b>This work was funded by the ERC Advanced Grant ”SIMULACRON” (agreement #884679), the GNI
             Project ”AI4Twinning”, and the DFG project CR 250/26-1 ”4D YouTube”.
@@ -300,17 +297,11 @@ geometries are then used to distill a feed-forward scene reconstruction model. b
 
 <footer class="footer">
   <div class="container">
-    <div class="content has-text-centered">
-      <a class="icon-link" href="https://github.com/philippwulff/dream-to-real" class="external-link" disabled>
-        <i class="fab fa-github"></i>
-      </a>
-    </div>
     <div class="columns is-centered has-text-centered">
       <div class="column is-8">
         <div class="content">
           <p>
-            This website is borrowed from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> and under a <a
-              rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> license.
+            This website was borrowed from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
           </p>
         </div>
       </div>
@@ -320,3 +311,17 @@ geometries are then used to distill a feed-forward scene reconstruction model. b
 
 </body>
 </html>
+
+<script>
+  // Pause the teaser video when the user clicks anywhere on them
+  const video = document.getElementById('teaser');
+  video.controls = false;
+
+  video.addEventListener('click', () => {
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
+    }
+  });
+</script>
