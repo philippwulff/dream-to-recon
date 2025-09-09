@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="Dream-to-Recon generates high-quality scene geometry from a single image and performs on par with reconstruction methods trained with multi-view supervision.">
+  <meta name="keywords" content="Dream-to-Recon, Monocular 3D Reconstruction, Diffusion, Generative">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dream-to-Recon: Monocular 3D Reconstruction with Diffusion-Depth Distillation from Single Images</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0C73V1VRL7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+      gtag('config', 'G-0C73V1VRL7');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏞️</text></svg>">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <!-- Plyr video player -->
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
+
+</head>
+
+<body>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">Dream-to-Recon: Monocular 3D Reconstruction with Diffusion-Depth
+              Distillation
+              from Single Images</h1>
+            <div class="is-size-5 publication-authors">
+              <!-- <span class="author-block" style="font-family: 'Libre Baskerville', serif;">ICCV 2025</span> -->
+              <img src="static/images/iccv-2025-logo.svg" alt="ICCV 2025 Logo"
+                style="height: 2.5em; vertical-align: middle; margin-top: 8px; margin-bottom: 24px;" />
+            </div>
+            <div class="is-size-4 publication-authors">
+              <span class="author-block">
+                <a href="https://philippwulff.github.io/">Philipp Wulff</a><sup>1</sup>&emsp;</span>
+              <span class="author-block">
+                <a href="https://fwmb.github.io/">Felix Wimbauer</a><sup>1,2</sup>&emsp;</span>
+              <span class="author-block">
+                <a href="https://dominikmuhle.github.io/">Dominik Muhle</a><sup>1,2,3</sup>&emsp;
+              </span>
+              <span class="author-block">
+                <a href="https://cvg.cit.tum.de/members/cremers">Daniel Cremers</a><sup>1,2</sup>
+              </span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>Technical University of Munich</span>&emsp;
+              <span class="author-block"><sup>2</sup>MCML</span>&emsp;
+              <span class="author-block"><sup>3</sup>SE3 Labs</span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- PDF Link. -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/pdf/2508.02323" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+                <!-- arxiv Link. -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2508.02323" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+                <!-- Code Link. -->
+                <span class="link-block">
+                  <a href="https://github.com/philippwulff/dream-to-recon" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code (Coming Soon)</span>
+                  </a>
+                </span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        </div>
+        </div>
+        </section>
+
+  <section class="hero teaser">
+    <div class="container is-max-fullhd">
+      <div class="hero-body">
+        <video id="teaser" autoplay muted loop playsinline height="100%" style="margin-bottom: 16px;">
+          <source src="https://github.com/philippwulff/dream-to-recon/releases/download/v0.0.0/teaser_crop_3fps_3x.mp4"
+            type="video/mp4">
+          </video>
+          <div class="container is-max-desktop">
+
+          <h2 class="subtitle has-text-centered">
+            We leverage a diffusion model and a depth predictor to generate high-quality scene geometry from a single
+            image. Then, we distill a feed-forward scene reconstruction model, which performs on par with methods
+            trained via multi-view supervision.
+          </h2>
+        </div>
+        </div>
+        </div>
+        </section>
+
+
+  <section class="hero is-light is-small">
+    <div class="hero-body">
+      <div class="container">
+        <!-- Abstract. -->
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Abstract</h2>
+            <div class="content has-text-justified">
+              <p>
+                Volumetric scene reconstruction from a single image is crucial for a broad range of applications like
+                autonomous driving
+                and robotics.
+                Recent volumetric reconstruction methods achieve impressive results, but generally require expensive 3D
+                ground truth or
+                multi-view supervision.
+              </p>
+              <p>
+                We propose to leverage pre-trained 2D diffusion models and depth prediction models to generate synthetic
+                scene geometry
+                <b>from a single image</b>.
+                This can then be used to distill a feed-forward scene reconstruction model.
+                Our experiments on the challenging KITTI-360 and Waymo datasets demonstrate that our method
+                <b>matches or outperforms state-of-the-art</b> baselines that use multi-view supervision, and offers
+                unique advantages,
+                for example regarding <b>dynamic scenes</b>.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!--/ Abstract. -->
+        </div>
+    </div>
+  </section>
+  <br />
+
+  <section class="section">
+    <div class="container is-max-fullhd">
+      <!-- Paper video. -->
+      <!-- <div class="columns is-centered has-text-centered">
+        <div class="column is-two-fifths">
+          <h2 class="title is-3">Video</h2>
+          <div class="publication-video">
+            <iframe src="https://www.youtube.com/embed/" frameborder="0" allow="autoplay; encrypted-media"
+              allowfullscreen></iframe>
+          </div>
+        </div>
+      </div> -->
+      <!--/ Paper video. -->
+      <!-- Method. -->
+      <div class="is-centered has-text-centered">
+        <h2 class="title is-3">Method</h2>
+        <div class="columns is-centered">
+          <div class="column is-four-fifths">
+            <div class="content has-text-justified">
+              <!-- <div class="content has-text-justified is-max-desktop"> -->
+              <p>
+                <span class="dnerf">Dream-to-Recon</span> comprises three steps: <b>a)</b> We train a view completion
+                model (VCM) that inpaints occluded areas and refines warped views. Training
+                uses only a single view per scene and leverages forward-backward warping for data generation. <b>b)</b>
+                The VCM is
+                applied iteratively alongside
+                a depth prediction network to synthesize virtual novel views, enabling progressive refinement of the 3D
+                geometry.
+                <b>c)</b> The synthesized scene
+                geometries are then used to distill a feed-forward scene reconstruction model by supervising occupancy
+                and virtual
+                depth.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="is-four-fifths"> -->
+        <div class="content has-text-justified">
+          <div class="wide-media">
+            <img src="static/images/method_v2.svg" alt="Method Overview">
+          </div>
+          <!-- </div> -->
+          <!--/ Method. -->
+        </div>
+      </div>
+      </div>
+      </section>
+  <br />
+
+
+
+  <section class="section">
+    <div class="container is-max-fullhd">
+      <!-- All Results. -->
+      <div class="columns is-centered has-text-centered">
+        <h2 class="title is-3">Results</h2>
+        <br />
+      </div>
+      <div class="columns is-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">3D Reconstruction</h2>
+          <div class="content has-text-justified">
+            <p>
+              We visualize the scene geometry by discretizing the occupancy into a voxel grid. We compare our method
+              against Behind the Scenes (BTS) [Wimbauer 2023] and also train a second BTS baseline that uses depth
+              prediction in addition to multi-view supervision (BTS-D).
+            </p>
+            </div>
+          <!-- 3D Reconstruction Results on KITTI-360. -->
+          <h3 class="title is-4">KITTI-360</h3>
+          <div class="content has-text-justified">
+            <p>
+              Both, the synthesized scene (Ours) and the geometry predicted by the scene reconstruction model
+              (Ours Distilled) exhibit high overall quality on par with both BTS variants.
+              However, the synthesized scenes occasionally display artifacts caused by poor view completion or depth
+              prediction. The distilled scene reconstruction model does not exhibit these issues, as
+              it is trained on a diverse dataset.
+            </p>
+          </div>
+          </div>
+      </div>
+      <div class="columns is-centered">
+        <div class="column">
+          <div class="content has-text-centered">
+            <div class="sequence-player" data-dataset="KITTI-360"></div>
+          </div>
+          <br />
+        </div>
+      </div>
+      <!-- / 3D Reconstruction Results on KITTI-360. -->
+      <!-- 3D Reconstruction Results on Waymo. -->
+      <div class="columns is-centered">
+        <div class="column is-four-fifths">
+          <h3 class="title is-4">Waymo</h3>
+          <div class="content has-text-justified">
+            <p>
+              Scenes in the Waymo Open Dataset are more dynamic compared to KITTI-360. As shown in the following video,
+              both BTS variants fail to reconstruct dynamic objects. This failure stems from their use of
+              multi-view data across multiple timesteps, which introduces inconsistency
+              when the object is in motion. In contrast, our synthesized
+              scenes naturally handle such scenarios.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="columns is-centered">
+        <div class="column">
+          <div class="content has-text-centered">
+            <div class="sequence-player" data-dataset="Waymo"></div>
+            <br />
+          </div>
+        </div>
+      </div>
+      <!-- / 3D Reconstruction Results on Waymo. -->
+      <div class="columns is-centered">
+        <div class="column is-four-fifths">
+          <!-- View Completion Results. -->
+          <h2 class="title is-3">Novel View Completion</h2>
+          <h3 class="title is-4">KITTI-360</h3>
+          <div class="content has-text-justified">
+            <p>
+              While we do not focus on novel view synthesis, we use synthetic novel views as an intermediary step to
+              synthetic occupancy. We rely on our view completion model (VCM) to complete occlusions and remove
+              artifacts in warped input images. The following video shows synthetic novel views obtained through a
+              single render-and-refine step.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="columns is-centered">
+        <div class="column is-three-fifths">
+          <div class="content has-text-centered">
+            <video controls muted preload playsinline autoplay loop width="100%">
+              <source src="https://github.com/philippwulff/dream-to-recon/releases/download/v0.0.0/nvs_720p_crop_5fps.mp4"
+                type="video/mp4">
+            </video>
+            <br />
+          </div>
+        </div>
+      </div>
+      <!-- / View Completion Results. -->
+      <!-- Occlusion masks. -->
+      <div class="columns is-centered">
+        <div class="column is-four-fifths">
+          <h3 class="title is-4">Masking Occlusions in Novel Views</h3>
+          <div class="content has-text-justified">
+            <p>
+              When warping the input view into a novel view, the sharp changes in the input depth map serve as a good
+              proxy for which regions will introduce occlusions. We leverage these depth-gradients to mask regions in
+              the novel
+              view which are occluded in the input view and post-process the mask to remove noise and fill in missing
+              regions.
+              We compare this strategy against a method that leverages two-way optical flow between the input and novel
+              views to identify regions visible only in the latter. Occlusions are shown in
+              <span style="background-color: #241145; color: #fdf8be; padding: 3px;">yellow</span>.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="columns is-centered">
+        <div class="column">
+          <div class="content has-text-centered">
+            <video controls muted preload playsinline autoplay loop width="100%">
+              <source src="https://github.com/philippwulff/dream-to-recon/releases/download/v0.0.0/occlusions_3fps_2x.mp4"
+                type="video/mp4">
+            </video>
+          </div>
+        </div>
+      </div>
+      <!-- / Occlusion masks. -->
+    </div>
+  </section>
+
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre>
+<code>@inproceedings{wulff2025dreamtorecon,
+  title     = {Dream-to-Recon: Monocular 3D Reconstruction with Diffusion-Depth Distillation from Single Images},
+  author    = {Wulff, Philipp and Wimbauer, Felix and Muhle, Dominik and Cremers, Daniel},
+  booktitle = {IEEE International Conference on Computer Vision (ICCV)},
+  year      = {2025}
+}</code></pre>
+    </div>
+    <!-- Acknowledgements. -->
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <div class="content has-text-justified is-small">
+            <p>
+              <b>Acknowledgements: </b>This work was funded by the ERC Advanced Grant ”SIMULACRON” (agreement #884679),
+              the GNI
+              Project ”AI4Twinning”, and the DFG project CR 250/26-1 ”4D YouTube”.
+            </p>
+          </div>
+          </div>
+          </div>
+          </div>
+          <!--/ Acknowledgements. -->
+          </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website was borrowed from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
+
+<script>
+          (function () {
+            // Keep your existing SEQUENCE_DATA exactly as-is
+            const REPO = "https://github.com/philippwulff/dream-to-recon/releases/download/v0.0.0";
+            const SEQUENCE_DATA = {
+              "KITTI-360": [
+                { id: 'seg_1', label: 'Drive 1 (0:32)', src: `${REPO}/reconstructions_kitti360_seq2.mp4`, poster: 'static/images/reconstructions_kitti360_seq2.jpg' },
+                { id: 'seg_0', label: 'Drive 2 (4:01)', src: `${REPO}/reconstructions_kitti360_seq1.mp4`, poster: 'static/images/reconstructions_kitti360_seq2.jpg' },
+                { id: 'seg_2', label: 'Drive 3 (1:01)', src: `${REPO}/reconstructions_kitti360_seq3.mp4`, poster: 'static/images/reconstructions_kitti360_seq2.jpg' },
+                { id: 'seg_3', label: 'Drive 4 (1:23)', src: `${REPO}/reconstructions_kitti360_seq4.mp4`, poster: 'static/images/reconstructions_kitti360_seq2.jpg' },
+              ],
+              Waymo: [
+                { id: 'seg_0', label: 'Segment 1 — Downtown', src: `${REPO}/reconstructions_waymo_seq0_downtown.mp4`, poster: 'static/images/reconstructions_kitti360_seq7.jpg' },
+                { id: 'seg_1', label: 'Segment 2 — Downtown', src: `${REPO}/reconstructions_waymo_seq1_downtown.mp4`, poster: 'static/images/reconstructions_kitti360_seq7.jpg' },
+                { id: 'seg_2', label: 'Segment 3 — Highway', src: `${REPO}/reconstructions_waymo_seq2_highway.mp4`, poster: 'static/images/reconstructions_kitti360_seq7.jpg' },
+                { id: 'seg_3', label: 'Segment 4 — Oncoming Traffic', src: `${REPO}/reconstructions_waymo_seq3_oncoming_traffic.mp4`, poster: 'static/images/reconstructions_kitti360_seq7.jpg' },
+                { id: 'seg_4', label: 'Segment 5 — Residential', src: `${REPO}/reconstructions_waymo_seq4_residential.mp4`, poster: 'static/images/reconstructions_kitti360_seq7.jpg' },
+                { id: 'seg_5', label: 'Segment 6 — Downtown', src: `${REPO}/reconstructions_waymo_seq5_downtown.mp4`, poster: 'static/images/reconstructions_kitti360_seq7.jpg' },
+                { id: 'seg_6', label: 'Segment 7 — Downtown', src: `${REPO}/reconstructions_waymo_seq6_downtown.mp4`, poster: 'static/images/reconstructions_kitti360_seq7.jpg' },
+                { id: 'seg_7', label: 'Segment 8 — Downtown', src: `${REPO}/reconstructions_waymo_seq7_downtown.mp4`, poster: 'static/images/reconstructions_kitti360_seq7.jpg' },
+                { id: 'seg_8', label: 'Segment 9 — Downtown', src: `${REPO}/reconstructions_waymo_seq8_downtown.mp4`, poster: 'static/images/reconstructions_kitti360_seq7.jpg' },
+              ]
+            };
+
+          function mount(container, dataset) {
+            const seqs = SEQUENCE_DATA[dataset] || [];
+
+          container.innerHTML = `
+        <div class="content has-text-centered">
+          <div class="field is-grouped is-grouped-centered" style="margin-bottom:.75rem">
+            <div class="control">
+              <div class="select is-small">
+                <select aria-label="Select ${dataset} sequence">
+                  <option value="" selected disabled>Choose a sequence</option>
+                  ${seqs.map(s => `<option value="${s.id}" data-src="${s.src}" data-poster="${s.poster || ''}">${s.label || s.id}</option>`).join('')}
+                </select>
+              </div>
+            </div>
+            <div class="control"><span class="tag is-light is-small">${dataset}</span></div>
+          </div>
+
+          <!-- No native controls; Plyr will render its own -->
+          <video class="sequence-video" muted playsinline preload="none"></video>
+        </div>
+      `;
+
+          const select = container.querySelector('select');
+          const video = container.querySelector('video');
+
+          // Create Plyr UI for this video element
+          const plyr = new Plyr(video, {
+            controls: ['play', 'progress', 'current-time', 'settings', 'fullscreen'],
+            clickToPlay: true,
+            autoplay: true
+          });
+
+          function setSourceFromOption(opt) {
+            if (!opt) return;
+
+          // Pause first, then swap
+          plyr.pause();
+
+          // Update Plyr source (poster included)
+          plyr.source = {
+            type: 'video',
+            title: opt.textContent || '',
+            sources: [{ src: opt.dataset.src, type: 'video/mp4' }],
+            poster: opt.dataset.poster || ''
+          };
+
+          // Keep network usage light by default
+          video.setAttribute('preload', 'metadata');
+        }
+
+          // Default to first real option on load
+          const firstPlayable = [...select.options].find(o => o.value && !o.disabled);
+          if (firstPlayable) {
+            select.value = firstPlayable.value;
+            setSourceFromOption(firstPlayable);
+          }
+
+          // Swap when user picks a different sequence
+          select.addEventListener('change', () => {
+            const opt = select.selectedOptions[0];
+            if (!opt || !opt.value) return;
+            setSourceFromOption(opt);
+            // If you want immediate playback after selection:
+            // plyr.play().catch(() => { });
+          });
+    }
+
+          document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.sequence-player').forEach(node => {
+              const dataset = node.dataset.dataset;
+              if (dataset) mount(node, dataset);
+            });
+          });
+        })();
+</script>
+<script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
