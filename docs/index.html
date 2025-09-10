@@ -116,7 +116,7 @@
   <section class="hero teaser">
     <div class="container is-max-fullhd">
       <div class="hero-body">
-        <video id="teaser" autoplay muted loop playsinline height="100%" style="margin-bottom: 16px;">
+        <video id="teaser" autoplay muted loop playsinline style="width:100%; height:auto; margin-bottom: 16px;">
           <source src="https://github.com/philippwulff/dream-to-recon/releases/download/v0.0.0/teaser_crop_3fps_3x.mp4"
             type="video/mp4">
           </video>
@@ -430,7 +430,7 @@
           </div>
 
           <!-- No native controls; Plyr will render its own -->
-          <video class="sequence-video" muted playsinline preload="none"></video>
+          <video class="sequence-video" muted playsinline controls preload="metadata" width="100%"></video>
         </div>
       `;
 
