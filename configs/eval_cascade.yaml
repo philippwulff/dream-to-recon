@@ -1,0 +1,19 @@
+defaults:
+  - controlnet_full_512x768
+  - default_eval
+  - _self_
+
+JOB_TYPE: "eval_controlnet_novel_view"
+
+SYNTHETIC_GT:
+  INPUT_CROP_POLICY: "center+left+right"
+
+  PSEUDO_VOLUME: 
+    COLOR_SAMPLING_MODE: "mean_valid_surface"
+    SURFACE_THRESH: 0.5
+
+  RENDERER:
+    n_coarse: 256
+    n_fine: 256
+    n_fine_depth: 128
+    depth_std: 2.0

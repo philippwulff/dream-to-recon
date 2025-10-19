@@ -1,0 +1,29 @@
+defaults:
+  - eval_bts_lidar_occ
+  - default_eval
+  - override CONTROLNET/DATA: waymo
+  - override BTS/DATA: waymo
+  - _self_
+
+JOB_TYPE: "eval_recon_lidar_occ"
+
+BTS:
+  DATA:
+    USE_VAL_FOR_TEST: true
+    MAX_VAL_DATASET_LEN: 500
+    TEST_SAMPLES_POLICY: eqspaced
+
+CONTROLNET:
+  DATA:
+    USE_VAL_FOR_TEST: true
+    MAX_VAL_DATASET_LEN: 500
+    TEST_SAMPLES_POLICY: eqspaced
+
+EVAL_OCCUPANCY:
+  MODE: "recon"
+  READ_GT_OCC_PATH: "data/GT_Occ_waymo"
+  # READ_GT_OCC_PATH: ""
+  SAVE_GT_OCC_MAP_PATH: ""
+  Y_RANGE: [0.75, 1.5]
+
+

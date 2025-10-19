@@ -1,0 +1,15 @@
+defaults:
+  # - exp_bts_synthetic
+  - recon_full
+  # - waymo
+  # - eval_bts_lidar_occ_waymo
+  - default_eval
+  - _self_
+
+JOB_TYPE: "eval_recon_lidar_occ"
+
+BTS:
+  RESUME_FROM: "/home/stud/wph/storage/user/BTS/out/recon/EXP99_backend-nccl-4_run_0/training_checkpoint_37000.pt"
+
+EVAL_OCCUPANCY:
+  MODE: "recon"

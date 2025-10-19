@@ -1,0 +1,49 @@
+defaults:
+  - default
+  - default_eval
+  - _self_
+
+# For the pre-trained BTS model checkpoint
+NAME: "pretrained_bts"
+UNIQUE_ID: "run_0"
+
+JOB_TYPE: "eval_recon_lidar_occ"
+
+EVAL_OCCUPANCY:
+  MODE: "recon"
+
+BTS:
+  RESUME_FROM: "out/pretrained/kitti_360/training-checkpoint.pt"
+
+  MODEL_CONF:
+    ARCH: "BTSNetOld"
+
+    use_code: true
+    prediction_mode: default
+
+    code:
+        num_freqs: 6
+        freq_factor: 1.5
+        include_input: true
+
+    encoder:
+        type: "monodepth2"
+        freeze: false
+        pretrained: true
+        resnet_layers: 50
+        num_ch_dec: [32,32,64,128,256]
+        d_out: 64
+        decoder_norm: null
+
+    mlp_coarse:
+        type : "resnet"
+        n_blocks : 0
+        d_hidden : 64
+
+    mlp_fine:
+        type : "empty"
+        n_blocks : 1
+        d_hidden : 128
+
+    z_near: 3.0
+    z_far: 80.0

@@ -1,0 +1,67 @@
+defaults:
+  - controlnet_full_512x768
+  - BTS/LOSSES/DensityGridLoss: DensityGridLoss 
+  - _self_
+
+
+NAME: "exp_recon_full"
+UNIQUE_ID: "run_0"
+
+BTS:
+  SUPERVISION_FROM_CASCADE: True
+  LR: 0.001
+  BATCH_SIZE: 2
+  BATCH_SIZE_MULTIPLE_AFTER_CLEANUP: 6
+  CACHE_SYNTHETIC_GT: true
+
+  MODEL_CONF:
+    OUTPUT_UNCERTAINTY: true
+    encoder: 
+      d_out: 128
+
+  LOSSES:
+    DepthReconstructionLoss:
+      invalid_policy: weight_guided
+    DensityGridLoss:
+      WEIGHT_OCCL_AND_EMPTY: 5
+      ALIGN: false 
+      ALIGN_SHIFT: false 
+
+  DATA:
+    image_size: [192, 640]
+
+CONTROLNET: 
+  MODEL:
+    CONTROLNET_MODEL_NAME_OR_PATH: "/home/stud/wph/storage/user/BTS/out/controlnet/controlnet_full_512x768/checkpoint-1800000/controlnet"
+  EVAL:
+    NUM_INFERENCE_STEPS: 5
+    SCHEDULER_NAME: "UniPCMultistepScheduler"
+
+  DATA: 
+    image_size: [192, 640]
+
+SYNTHETIC_GT:
+  DEPTH_PREDICTOR_NAME: "Metric3D"
+  ONLY_OCCLUSIONS_VALID: true 
+  
+  NV_CAM_SAMPLER:
+    MAKE_PROJS_POLICY: "center_crop"
+    CHOSEN_SAMPLER_TYPE: "shift_m4to4"
+
+  INPUT_CROP_POLICY: "center+left+right"
+  TOP_K_NOVEL_VIEWS_TO_KEEP: 6
+
+  PSEUDO_VOLUME: 
+    COLOR_SAMPLING_MODE: "mean_valid_surface"
+    SURFACE_THRESH: 0.5
+    DENSITY_VALUE: 1000
+    DENSITY_DOWNSCALE_FACTOR: 100
+    SET_ONLY_OCCLUSIONS_EMPTY: true
+
+  CASCADE:
+    CHOSEN_ANCHOR_TYPE: "rig8of8"
+    # CHOSEN_ANCHOR_TYPE: "rig12of12"
+    # CHOSEN_ANCHOR_TYPE: "rig8of8plus8"
+
+EVAL_OCCUPANCY:
+  MODE: "cascade"

@@ -1,0 +1,28 @@
+defaults:
+  - default
+  # - override CONTROLNET/DATA: waymo
+  - _self_
+
+NAME: "controlnet_full_512x768"
+
+CONTROLNET:
+  # DATA: 
+  #   image_size: [ 320, 480 ]
+
+  MODEL:
+    CONDITIONING_INPUT_TYPE_AND_CHANNELS: ["rgbdm", 5]
+    MASK_CONDITIONING_IMAGE: true
+    PRETRAINED_MODEL_NAME_OR_PATH: "stabilityai/stable-diffusion-2-1-unclip-small"
+    IS_UNCLIP: true
+    NOISE_LEVEL: 1000
+    CONTROLNET_IMAGE_EMBEDS_TYPE: "image"
+  TRAIN:
+    RESOLUTION: [512, 768]
+    TRAIN_BATCH_SIZE: 16
+
+SYNTHETIC_GT:
+    RERENDERING_RESOLUTION: [192, 240]  # 4 / 5   # FIXME this is wrong and should be [192, 360]
+    DEPTHS_CONDITIONING_INVERSE: true
+    SET_OCCLUSIONS_TO_RANDOM_NOISE: true
+    CLOSE_CONDITIONING_INVALID: true
+    CLOSE_CONDITIONING_INVALID_KERNEL_SIZE: 5

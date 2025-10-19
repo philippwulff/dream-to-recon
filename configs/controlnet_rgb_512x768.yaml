@@ -1,0 +1,17 @@
+defaults:
+  - default
+  - _self_
+
+NAME: "controlnet_rgb_512x768"
+
+CONTROLNET:
+  MODEL:
+    CONDITIONING_INPUT_TYPE_AND_CHANNELS: ["rgb", 3]
+    MASK_CONDITIONING_IMAGE: true
+  TRAIN:
+    RESOLUTION: [512, 768]
+    TRAIN_BATCH_SIZE: 16
+
+
+SYNTHETIC_GT:
+    RERENDERING_RESOLUTION: [192, 360]

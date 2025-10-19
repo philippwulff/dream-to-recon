@@ -1,0 +1,25 @@
+defaults:
+  - controlnet_full_512x768
+  - override CONTROLNET/DATA: waymo
+  - override BTS/DATA: waymo
+  - _self_
+
+NAME: "controlnet_full_512x768_waymo"
+
+CONTROLNET:
+  DATA: 
+    image_size: [ 320, 480 ]
+
+  TRAIN:
+    RESOLUTION: [512, 768]
+    TRAIN_BATCH_SIZE: 16
+    NUM_TRAIN_EPOCHS: 10
+
+  # MODEL: 
+    # When training from scratch:
+    # PRETRAINED_MODEL_NAME_OR_PATH: "stabilityai/stable-diffusion-2-1-base"
+    # When fine-tuning:
+    # CONTROLNET_MODEL_NAME_OR_PATH: "out/controlnet/controlnet_full_512x768/checkpoint-1800000/controlnet"
+
+SYNTHETIC_GT:
+    RERENDERING_RESOLUTION: [192, 240]  # 4 / 5   # FIXME this is wrong and should be [192, 360]

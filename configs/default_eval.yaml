@@ -1,0 +1,31 @@
+JOB_TYPE: "eval_recon_nvs"
+
+UNIQUE_EVAL_ID: "eval_run_0"
+
+AMP: 
+    ENABLED: false
+
+BTS:
+    LOG_EVERY_ITERS: 50
+    VISUALIZE_EVERY: 10
+    BATCH_SIZE: 1
+
+    MODEL_CONF:
+        # use_code: true
+        ray_batch_size: 512
+
+CONTROLNET:
+    EVAL:
+        NUM_INFERENCE_STEPS: 5
+        SCHEDULER_NAME: "UniPCMultistepScheduler"
+
+SYNTHETIC_GT:
+    NV_CAM_SAMPLER:
+        NUM_NOVEL_VIEWS: 1
+        MAKE_PROJS_POLICY: "crop_to_visible"
+        CHOSEN_SAMPLER_TYPE: "shift_m4to4"
+
+    DEPTH_PREDICTOR_NAME: "Metric3D"
+
+    PSEUDO_VOLUME:
+        SET_ONLY_OCCLUSIONS_EMPTY: true

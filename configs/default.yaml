@@ -1,0 +1,153 @@
+defaults:
+  - base_main_config
+  - CONTROLNET/DATA: kitti_360
+  - BTS/DATA: kitti_360
+  - BTS/LOSSES/DepthReconstructionLoss: DepthReconstructionLoss
+  # - BTS/LOSSES/DensityGridRegularizationLoss: DensityGridRegularizationLoss
+  - SYNTHETIC_GT/NV_CAM_SAMPLER: RandomChoiceCameraSampler
+  - _self_
+
+JOB_TYPE: "bts"
+
+AMP:
+  ENABLED: true
+PROFILER:
+  ENABLED: false
+LOG_GRADIENTS: false
+
+EVAL_OCCUPANCY:
+  READ_GT_OCC_PATH: "data/GT_Occ_kitti360"
+  Z_RANGE: [20, 4]
+  GT_AGGREGATE_TIMESTEPS: 300
+
+# --- BTS DEFAULTS ACROSS EXPERIMENTS ---
+
+BTS:
+  NUM_WORKERS: 2        # Per dataloader
+
+  NUM_EPOCHS: 35
+  BATCH_SIZE: 4         # Total batch size (will be divided among processes/GPUs)
+
+  RESUME_FROM: "latest"
+
+  VIS_USE_ITERS: true
+  VAL_USE_ITERS: false
+  VALIDATE_EVERY: 1
+  VISUALIZE_EVERY: 500
+  CHECKPOINT_EVERY: 200
+  LOSS_DURING_VALIDATION: true
+
+  LR: 0.001
+  
+  SCHEDULER:
+      type: step
+      step_size: 120000
+      gamma: 0.1
+
+  SAVE_BEST:
+      METRIC: abs_rel
+      SIGN: -1
+
+  LOSSES:
+      DepthReconstructionLoss:
+          invalid_policy: "strict"
+          criterion: "gnll"
+
+  MODEL_CONF:
+      ARCH: "BTSDirect"   # or BTSNet
+      use_code: true
+      prediction_mode: default
+
+      code:
+          num_freqs: 6
+          freq_factor: 1.5
+          include_input: true
+
+      encoder:
+          type: "monodepth2"
+          freeze: false
+          pretrained: true
+          resnet_layers: 50
+          num_ch_dec: [32,32,64,128,256]
+          d_out: 64
+          decoder_norm: "batch_norm"
+
+      z_near: 3
+      z_far: 40
+      inv_z: true
+
+      n_frames_encoder: 1
+      n_frames_render: 2
+      frame_sample_mode: synthetic_gt
+
+      sample_mode: image
+      patch_size: 8
+      ray_batch_size: 4096
+
+      flip_augmentation: true
+
+      learn_empty: false
+      code_mode: z
+
+  RENDERER:
+      n_coarse : 64
+      n_fine : 0
+      n_fine_depth : 0
+      depth_std : 1.0
+      sched : []
+      white_bkgd : false
+      lindisp: true
+      hard_alpha_cap: true
+
+# --- CONTROLNET DEFAULTS ACROSS EXPERIMENTS ---
+
+CONTROLNET:
+  MIXED_PRECISION: "fp16"
+  DATA: 
+    image_size: [ 384, 1280 ]
+    MAX_VAL_DATASET_LEN: 32
+  TRAIN:
+    CHECKPOINTING_STEPS: 200000
+    CHECKPOINTS_TOTAL_LIMIT: 5
+    DATALOADER_NUM_WORKERS: 4
+    NUM_TRAIN_EPOCHS: 20 
+    # Batch size 10 requires 
+    # ~??GB VRAM on KITTI (384x1280)
+    # ~43GB VRAM on Waymo (320x480)
+    TRAIN_BATCH_SIZE: 12  
+    LR: 1e-5
+    RESOLUTION: [512, 512]
+  EVAL: 
+    VALIDATION_STEPS: 50000
+    # NUM_INFERENCE_STEPS: 20
+    # SCHEDULER_NAME: "DDIMScheduler"
+    BATCH_SIZE: 4
+
+    NUM_INFERENCE_STEPS: 5
+    SCHEDULER_NAME: "UniPCMultistepScheduler"
+  
+  MODEL: 
+    PRETRAINED_MODEL_NAME_OR_PATH: "stabilityai/stable-diffusion-2-1-base"
+
+# --- SYNTHETIC GT DEFAULTS ACROSS EXPERIMENTS ---
+
+SYNTHETIC_GT:
+  # RERENDERING_RESOLUTION: [192, 288]  # 2 / 3
+  # RERENDERING_RESOLUTION: [192, 320]  # 3 / 5
+  # RERENDERING_RESOLUTION: [192, 192]  # 1 / 1
+  RERENDERING_RESOLUTION: [192, 240]  # 4 / 5
+
+  DEPTH_PREDICTOR_NAME: "Metric3D"
+
+  Z_FAR_GT: 55.0
+
+  NV_CAM_SAMPLER:
+      MAKE_PROJS_POLICY: "crop_to_visible"
+      CHOSEN_SAMPLER_TYPE: "shift_m3to3"
+
+  RENDERER:
+    n_coarse: 48
+    n_fine: 32
+    n_fine_depth: 16
+    depth_std: 2.0
+

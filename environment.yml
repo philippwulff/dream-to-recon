@@ -1,0 +1,46 @@
+name: dtr
+channels:
+  - pytorch
+  - nvidia
+  - defaults
+dependencies:
+  - python=3.10
+  - pytorch 
+  - torchvision 
+  - torchaudio 
+  - pytorch-cuda=12.1
+  - pip
+  - pip:
+    - accelerate 
+    - git+https://github.com/huggingface/diffusers.git  # needs install from source to train controlnet
+    # - git+https://github.com/huggingface/diffusers.git@357855f8fca8d27beb0a3fde333f46db22f29391  # needs install from source to train controlnet Version: 0.26.0.dev0
+    - transformers
+    - xformers>=0.0.16 
+    - pytorch-ignite
+    - hydra-core
+    - omegaconf
+    - h5py
+    - lpips
+    - dotmap
+    - dotdict
+    - plyfile
+    - tensorboardX
+    - opencv-python
+    - matplotlib
+    - moviepy
+    - mediapy
+    - scipy==1.9.1  # Specific version needed to use FID in Ignite
+    - scikit-image
+    - notebook
+    - plotly
+    # - timm==0.6.7 # For ZoeDepth: Specific versions needed due to this error: https://github.com/isl-org/ZoeDepth/issues/72#issuecomment-1713020707
+    - timm>=0.8     # For UniDepth
+    - mmcv-full     # Needed for Metric3D
+    - html4vision
+    - iopath
+    - einops        # Needed for UniDepth
+    - wandb         # Needed for UniDepth
+    - mmengine
+    - tensorboard
+    - kaleido       # For exporting to PDF format with plotly
+    - tabulate      # For exporting pandas DFs to markdown

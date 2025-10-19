@@ -1,0 +1,33 @@
+defaults:
+  # - exp_bts_synthetic
+  # - exp_recon_full
+  - recon_waymo
+  # - eval_bts_lidar_occ_waymo
+  - default_eval
+  - _self_
+
+JOB_TYPE: "eval_recon_lidar_occ"
+
+BTS:
+  # RESUME_FROM: "/home/stud/wph/storage/user/BTS/out/recon/EXP99_backend-nccl-4_run_0/training_checkpoint_37000.pt"
+  DATA:
+    USE_VAL_FOR_TEST: true
+    MAX_VAL_DATASET_LEN: 500
+    TEST_SAMPLES_POLICY: eqspaced
+
+CONTROLNET:
+  DATA:
+    USE_VAL_FOR_TEST: true
+    MAX_VAL_DATASET_LEN: 500
+    TEST_SAMPLES_POLICY: eqspaced
+
+EVAL_OCCUPANCY:
+  MODE: "recon"
+  READ_GT_OCC_PATH: "data/GT_Occ_waymo"
+  # READ_GT_OCC_PATH: ""
+  SAVE_GT_OCC_MAP_PATH: ""
+  # SAVE_GT_OCC_MAP_PATH: "data/GT_Occ_waymo"
+  GT_AGGREGATE_TIMESTEPS: 20
+  Y_RANGE: [0.75, 1.5]
+
+

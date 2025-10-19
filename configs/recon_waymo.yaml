@@ -1,0 +1,85 @@
+defaults:
+  - controlnet_full_512x768_waymo
+  - BTS/LOSSES/DensityGridLoss: DensityGridLoss 
+  - _self_
+
+NAME: "waymo"
+UNIQUE_ID: "run_0"
+
+BTS:
+  SUPERVISION_FROM_CASCADE: True
+  LR: 0.001
+  BATCH_SIZE: 2
+  BATCH_SIZE_MULTIPLE_AFTER_CLEANUP: 4
+  CACHE_SYNTHETIC_GT: true
+
+  DATA: 
+    image_size: [ 320, 480 ]
+    return_45: true
+    # Use the validation data for testing because we do not have bbox annotations for the test set
+    USE_VAL_FOR_TEST: true
+    MAX_TEST_DATASET_LEN: 500
+    TEST_SAMPLES_POLICY: eqspaced
+
+  MODEL_CONF:
+    OUTPUT_UNCERTAINTY: true
+    encoder: 
+      d_out: 128
+
+  LOSSES:
+    DepthReconstructionLoss:
+      invalid_policy: weight_guided
+    DensityGridLoss:
+      WEIGHT_OCCL_AND_EMPTY: 5
+      ALIGN: false 
+      ALIGN_SHIFT: false 
+
+SYNTHETIC_GT:
+
+  DEPTH_GRADS_THRESH: 0.05
+  RERENDERING_RESOLUTION: [320, 480]  # 4 / 5
+
+  DEPTH_PREDICTOR_NAME: "Metric3D"
+  
+  ONLY_OCCLUSIONS_VALID: true 
+  
+  NV_CAM_SAMPLER:
+    MAKE_PROJS_POLICY: "center_crop"
+
+  INPUT_CROP_POLICY: "center+left+right"
+  TOP_K_NOVEL_VIEWS_TO_KEEP: 6
+
+  PSEUDO_VOLUME: 
+    COLOR_SAMPLING_MODE: "mean_valid_surface"
+    SURFACE_THRESH: 0.5
+    DENSITY_VALUE: 1000
+    DENSITY_DOWNSCALE_FACTOR: 100
+    SET_ONLY_OCCLUSIONS_EMPTY: true
+
+  CASCADE:
+    CHOSEN_ANCHOR_TYPE: "rig8of8_waymo"
+    # CHOSEN_ANCHOR_TYPE: "rig12of12"
+    # CHOSEN_ANCHOR_TYPE: "rig8of8plus8"
+
+CONTROLNET:
+  MODEL:
+    CONTROLNET_MODEL_NAME_OR_PATH: "out/controlnet/controlnet_full_512x768_waymo/checkpoint-800000/controlnet"
+    # CONTROLNET_MODEL_NAME_OR_PATH: "/home/stud/wph/storage/user/BTS/out/controlnet/controlnet_full_512x768/checkpoint-1800000/controlnet"
+  EVAL:
+    NUM_INFERENCE_STEPS: 5
+    SCHEDULER_NAME: "UniPCMultistepScheduler"
+
+  DATA:
+    image_size: [ 320, 480 ]
+    return_45: true
+    # Use the validation data for testing because we do not have bbox annotations for the test set
+    USE_VAL_FOR_TEST: true
+    MAX_TEST_DATASET_LEN: 500
+    TEST_SAMPLES_POLICY: eqspaced
+
+EVAL_OCCUPANCY:
+  MODE: "cascade"
+  READ_GT_OCC_PATH: "data/GT_Occ_waymo"
+  # OCC_THRESHOLD: 0.3
+  # GT_AGGREGATE_TIMESTEPS: 20
+  Y_RANGE: [0.75, 1.5]
