@@ -101,7 +101,17 @@
                     <span class="icon">
                       <i class="fab fa-github"></i>
                     </span>
-                    <span>Code (Coming Soon)</span>
+                    <span>Code</span>
+                    </a>
+                    </span>
+                    <!-- Poster Link. -->
+                    <span class="link-block">
+                      <a href="https://iccv.thecvf.com/media/PosterPDFs/ICCV%202025/2272.png?t=1759497860.0726788"
+                        class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                          <i class="fas fa-image"></i>
+                        </span>
+                        <span>Poster</span>
                   </a>
                 </span>
               </div>
@@ -210,10 +220,35 @@
             <img src="static/images/method_v2.svg" alt="Method Overview">
           </div>
           <!-- </div> -->
-          <!--/ Method. -->
+        </div>
+        <h2 class="title is-5">About a) View Completion Model Training</h2>
+        <div class="columns is-centered">
+          <div class="column is-four-fifths">
+            <div class="content has-text-justified">
+              <!-- <div class="content has-text-justified is-max-desktop"> -->
+              <p>
+                Warping an RGBD image into a novel view produces "smearing defects" for pixels that are occluded in the
+                input view. We aim to train a view completion model capable of removing these defects.
+                In a) we produce pairs of clean and corrupted images which contains such defects. The following
+                visualisation shows how forward-backward-warping "smeares-out" all pixels that are occluded in the novel view.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="columns is-centered">
+          <div class="column is-three-fifths">
+            <div class="content has-text-centered">
+              <video autoplay muted loop playsinline style="width:100%; height:auto; margin-top: 16px;">
+                <source src="https://github.com/philippwulff/dream-to-recon/releases/download/v0.0.0/method_vid_a.mp4"
+                  type="video/mp4">
+              </video>
+              <br />
+            </div>
+          </div>
+        </div>
         </div>
       </div>
-      </div>
+      <!--/ Method. -->
       </section>
   <br />
 
