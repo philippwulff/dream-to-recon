@@ -15,10 +15,12 @@
   <a href="https://dominikmuhle.github.io/">Dominik Muhle</a>,&nbsp&nbsp
   <a href="https://vision.in.tum.de/members/cremers">Daniel Cremers</a>
 </h3>
-<video width="100%" loop>
-  <source src="https://github.com/philippwulff/dream-to-recon/releases/download/v0.0.0/teaser_crop_3fps_3x.mp4" type="video/mp4">
-</video>
 <em>
+</div>
+
+https://github.com/user-attachments/assets/4585a88b-5dfb-4cb4-8cb3-ab3c2138d411
+
+<div align="center" autoplay controls>
 We leverage a diffusion model and a depth predictor to generate high-quality scene geometry from a single image. Then, we distill a feed-forward scene reconstruction model, which performs on par with methods trained via multi-view supervision.</em>
 </div>
 <br>
@@ -45,10 +47,11 @@ If you find our work useful, please consider citing our paper:
 ```
 
 # 🪧 Overview 
-<div align="center">
-<img src="https://philippwulff.github.io/dream-to-recon/static/images/method_v2.svg" alt="Method Overview"/>
-<em>
 
+<img width="5256" height="1958" alt="method_v2" src="https://github.com/user-attachments/assets/546ca908-b211-498d-af8b-9d85286b3df4" />
+
+<div align="center">
+<em>
 Dream-to-Recon comprises three steps: a) We train a view completion model (VCM) that inpaints occluded areas and refines warped views. Training uses only a single view per scene and leverages forward-backward warping for data generation. b) The VCM is applied iteratively alongside a depth prediction network to synthesize virtual novel views, enabling progressive refinement of the 3D geometry. c) The synthesized scene geometries are then used to distill a feed-forward scene reconstruction model by supervising occupancy and virtual depth.
 </em>
 </div>
